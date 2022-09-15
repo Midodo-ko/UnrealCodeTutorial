@@ -12,9 +12,13 @@ class UNREALCODETUTORIAL_API AMyActor : public AActor
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleAnywhere);
+	// 엔진에서 확인가능
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* Mesh;
 	
+	// 엔진에서 수정가능
+	UPROPERTY(EditAnywhere, Category = Level)
+	int32 level;
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
