@@ -2,12 +2,24 @@
 
 
 #include "MyCharacter.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	SpringArm->SetupAttachment(GetCapsuleComponent());
+	Camera->SetupAttachment(SpringArm);
+
+	SpringArm->TargetArmLength = 500.f;
+	SpringArm->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SM(TEXT("SkeletalMesh'/Game/PolygonDungeonRealms/Meshes/Characters/SK_BR_Chr_Demon_01.SK_BR_Chr_Demon_01'"));
 
@@ -36,5 +48,17 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AMyCharacter::MoveUpDown);
+	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AMyCharacter::MoveLeftRight);
+}
+
+void AMyCharacter::MoveUpDown(float value)
+{
+	AddMovementInput(GetActorForwardVector(), value);
+}
+
+void AMyCharacter::MoveLeftRight(float value)
+{
+	AddMovementInput(GetActorRightVector(), value);
 }
 

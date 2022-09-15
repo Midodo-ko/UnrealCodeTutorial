@@ -2,6 +2,7 @@
 
 
 #include "MyPawn.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
 AMyPawn::AMyPawn()
@@ -10,6 +11,9 @@ AMyPawn::AMyPawn()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Movement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+	RootComponent = Mesh;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> StaticMesh(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Props/SM_Prop_Barrel_02.SM_Prop_Barrel_02'"));
 
@@ -33,16 +37,22 @@ void AMyPawn::BeginPlay()
 void AMyPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	AddActorLocalRotation(FRotator(RotateSpeed * DeltaTime, 0.f, 0.f));
-
-	RotateSpeed = 15.0f;
 }
 
 // Called to bind functionality to input
 void AMyPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AMyPawn::UpDown);
+	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AMyPawn::LeftRight);
 }
 
+void AMyPawn::UpDown(float value)
+{
+	AddMovementInput(GetActorForwardVector(), value);
+}
+
+void AMyPawn::LeftRight(float value)
+{
+	AddMovementInput(GetActorRightVector(), value);
+}

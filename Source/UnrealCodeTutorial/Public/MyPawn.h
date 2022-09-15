@@ -14,8 +14,8 @@ class UNREALCODETUTORIAL_API AMyPawn : public APawn
 private:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, Category = Move)
-		float RotateSpeed;
+	UPROPERTY(VisibleAnywhere)
+		class UFloatingPawnMovement* Movement;
 
 public:
 	// Sets default values for this pawn's properties
@@ -32,4 +32,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	void UpDown(float value);
+	void LeftRight(float value);
 };

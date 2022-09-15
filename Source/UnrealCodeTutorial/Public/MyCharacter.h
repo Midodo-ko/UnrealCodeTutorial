@@ -12,12 +12,10 @@ class UNREALCODETUTORIAL_API AMyCharacter : public ACharacter
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere)
-		FVector a; //위치
-	UPROPERTY(EditAnywhere)
-		FRotator b; //회전
-	UPROPERTY(EditAnywhere)
-		FString c; //문자열
+	UPROPERTY(VisibleAnywhere)
+		class USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere)
+		class UCameraComponent* Camera;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
@@ -33,4 +31,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+public:
+	void MoveUpDown(float value);
+	void MoveLeftRight(float value);
 };
