@@ -28,6 +28,9 @@ AMyCharacter::AMyCharacter()
 		GetMesh()->SetSkeletalMesh(SM.Object);
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, 0.f));
 	}
+
+	X = 0.f;
+	Y = 0.f;
 }
 
 // Called when the game starts or when spawned
