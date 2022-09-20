@@ -2,6 +2,8 @@
 
 
 #include "MyAnimInstance.h"
+#include "MyCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeletaSeconds)
 {
@@ -11,5 +13,14 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeletaSeconds)
 	if (IsValid(Pawn))
 	{
 		Speed = Pawn->GetVelocity().Size();
+		auto Character = Cast<AMyCharacter>(Pawn);
+
+		if (IsValid(Character))
+		{
+			Vertical = Character->GetY();
+			Horizontal = Character->GetX();
+
+			IsFalling = Character->GetMovementComponent()->IsFalling();
+		}
 	}
 }

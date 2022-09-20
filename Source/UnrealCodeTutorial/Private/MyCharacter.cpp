@@ -18,7 +18,7 @@ AMyCharacter::AMyCharacter()
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(SpringArm);
 
-	SpringArm->TargetArmLength = 500.f;
+	SpringArm->TargetArmLength = 600.f;
 	SpringArm->SetRelativeRotation(FRotator(-35.f, 0.f, 0.f));
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SM(TEXT("SkeletalMesh'/Game/PolygonDungeonRealms/Meshes/Characters/SK_BR_Chr_Demon_01.SK_BR_Chr_Demon_01'"));
@@ -54,6 +54,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis(TEXT("MoveForwardBackward"), this, &AMyCharacter::MoveForwardBackward);
 	PlayerInputComponent->BindAxis(TEXT("MoveLeftRight"), this, &AMyCharacter::MoveLeftRight);
 	PlayerInputComponent->BindAxis(TEXT("LookLeftRight"), this, &AMyCharacter::LookLeftRight);
+
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMyCharacter::Jump);
 }
 
 void AMyCharacter::MoveForwardBackward(float value)

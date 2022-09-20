@@ -23,6 +23,8 @@ private:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		float Vertical;
 
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		bool IsFalling;
 public:
 	virtual void NativeUpdateAnimation(float DeletaSeconds) override;
 };
