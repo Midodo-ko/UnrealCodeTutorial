@@ -25,6 +25,14 @@ private:
 
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		bool IsFalling;
+
+	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		UAnimMontage* AttackMontage;
+
+public:
+	UMyAnimInstance();
 public:
 	virtual void NativeUpdateAnimation(float DeletaSeconds) override;
+public:
+	void PlayerAttackAnimation();
 };

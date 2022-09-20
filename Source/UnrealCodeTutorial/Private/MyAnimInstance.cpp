@@ -5,6 +5,15 @@
 #include "MyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+UMyAnimInstance::UMyAnimInstance()
+{
+	ConstructorHelpers::FObjectFinder<UAnimMontage> A_Montage(TEXT("AnimMontage'/Game/Animation/Attack_Montage.Attack_Montage'"));
+	if (A_Montage.Succeeded())
+	{
+		AttackMontage = A_Montage.Object;
+	}
+}
+
 void UMyAnimInstance::NativeUpdateAnimation(float DeletaSeconds)
 {
 	Super::NativeUpdateAnimation(DeletaSeconds);
@@ -21,6 +30,17 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeletaSeconds)
 			Horizontal = Character->GetX();
 
 			IsFalling = Character->GetMovementComponent()->IsFalling();
+		}
+	}
+}
+
+void UMyAnimInstance::PlayerAttackAnimation()
+{
+	if (IsValid(AttackMontage)) {
+
+		if (!Montage_IsPlaying(AttackMontage))
+		{
+			Montage_Play(AttackMontage, 1.f);
 		}
 	}
 }
