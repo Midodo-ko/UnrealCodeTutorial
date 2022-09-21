@@ -38,3 +38,8 @@ void UMyAnimInstance::PlayerAttackAnimation()
 {
 	Montage_Play(AttackMontage, 1.f);
 }
+
+void UMyAnimInstance::AnimNotify_Hit()
+{
+	UE_LOG(LogTemp, Log, TEXT("Hit"));
+}
