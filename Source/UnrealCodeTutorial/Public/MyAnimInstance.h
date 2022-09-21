@@ -34,7 +34,7 @@ public:
 public:
 	virtual void NativeUpdateAnimation(float DeletaSeconds) override;
 public:
-	void PlayerAttackAnimation();
+	void PlayerAttackAnimation(int32 index);
 
 	// AnimNotify_이벤트이름()
 	UFUNCTION()

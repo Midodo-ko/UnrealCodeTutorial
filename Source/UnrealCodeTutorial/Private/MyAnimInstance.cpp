@@ -34,12 +34,14 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeletaSeconds)
 	}
 }
 
-void UMyAnimInstance::PlayerAttackAnimation()
+void UMyAnimInstance::PlayerAttackAnimation(int32 index)
 {
 	Montage_Play(AttackMontage, 1.f);
+	FName AniName = FName(*FString::Printf(TEXT("Attack_%d"), index));
+	Montage_JumpToSection(AniName, AttackMontage);
 }
 
 void UMyAnimInstance::AnimNotify_Hit()
 {
-	UE_LOG(LogTemp, Log, TEXT("Hit"));
+	//UE_LOG(LogTemp, Log, TEXT("Hit"));
 }

@@ -102,13 +102,35 @@ void AMyCharacter::Attack()
 {
 	if (IsAttack)
 	{
-		return;
+		if (AttackIndex > 3)
+		{
+			return;
+		}
 	}
 	if (AnimInstance)
 	{
-		AnimInstance->PlayerAttackAnimation();
-
+		AnimInstance->PlayerAttackAnimation(AttackIndex);
+		AttackIndex = ++AttackIndex % 4;
 		IsAttack = true;
+
+		FHitResult HitResult;
+		FCollisionQueryParams Params(NAME_None, false, this);
+
+		float AttackRange = 100.f;
+		float AttackRadius = 50.f;
+
+		bool Result = GetWorld()->SweepSingleByChannel(
+			OUT HitResult,
+			GetActorLocation(),
+			GetActorLocation() + GetActorForwardVector() * AttackRange,
+			FQuat::Identity,
+			ECollisionChannel::ECC_EngineTraceChannel2,
+			FCollisionShape::MakeSphere(AttackRadius),
+			Params);
+		if (Result && HitResult.GetActor())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Hit : %s"), *HitResult.GetActor()->GetName());
+		}
 	}
 }
 

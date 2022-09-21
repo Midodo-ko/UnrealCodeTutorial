@@ -25,6 +25,8 @@ private:
 		class UMyAnimInstance* AnimInstance;
 	UPROPERTY(VisibleAnywhere)
 		bool IsAttack = false;
+	UPROPERTY()
+		int32 AttackIndex = 0;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
