@@ -38,6 +38,12 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	if (AnimInstance)
+	{
+		AnimInstance->OnMontageEnded.AddDynamic(this, &AMyCharacter::OnAttackMontageEnd);
+	}
 }
 
 // Called every frame
@@ -60,13 +66,30 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyCharacter::Attack);
 }
 
+void AMyCharacter::Jump()
+{
+	if (IsAttack)
+	{
+		return;
+	}
+	ACharacter::Jump();
+}
+
 void AMyCharacter::MoveForwardBackward(float value)
 {
+	if (IsAttack)
+	{
+		return;
+	}
 	AddMovementInput(GetActorForwardVector(), value);
 }
 
 void AMyCharacter::MoveLeftRight(float value)
 {
+	if (IsAttack)
+	{
+		return;
+	}
 	AddMovementInput(GetActorRightVector(), value);
 }
 
@@ -77,9 +100,19 @@ void AMyCharacter::LookLeftRight(float value)
 
 void AMyCharacter::Attack()
 {
-	auto AnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	if (IsAttack)
+	{
+		return;
+	}
 	if (AnimInstance)
 	{
 		AnimInstance->PlayerAttackAnimation();
+
+		IsAttack = true;
 	}
+}
+
+void AMyCharacter::OnAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	IsAttack = false;
 }

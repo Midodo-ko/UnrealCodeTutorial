@@ -20,6 +20,11 @@ private:
 		float X;
 	UPROPERTY(VisibleAnywhere)
 		float Y;
+
+	UPROPERTY()
+		class UMyAnimInstance* AnimInstance;
+	UPROPERTY(VisibleAnywhere)
+		bool IsAttack = false;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
@@ -35,11 +40,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void Jump() override;
+
 public:
 	void MoveForwardBackward(float value);
 	void MoveLeftRight(float value);
 	void LookLeftRight(float value);
 	void Attack();
+	
+
+	UFUNCTION()
+		void OnAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted);
 
 public:
 	float GetX() { return X; }
