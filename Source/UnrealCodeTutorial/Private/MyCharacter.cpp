@@ -37,22 +37,22 @@ AMyCharacter::AMyCharacter()
 	FName WeaponRightSocket(TEXT("Hand_RSocket"));
 	if (GetMesh()->DoesSocketExist(WeaponLeftSocket))
 	{
-		L_Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("L_Weapon"));
+		//L_Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("L_Weapon"));
 		R_Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("R_Weapon"));
 		
-		static ConstructorHelpers::FObjectFinder<UStaticMesh> SW_L(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Weapons/SM_Wep_Knife_Large_01.SM_Wep_Knife_Large_01'"));
+		//static ConstructorHelpers::FObjectFinder<UStaticMesh> SW_L(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Weapons/SM_Wep_Knife_Large_01.SM_Wep_Knife_Large_01'"));
 		static ConstructorHelpers::FObjectFinder<UStaticMesh> SW_R(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Weapons/SM_Wep_Knife_Large_02.SM_Wep_Knife_Large_02'"));
 		
-		if (SW_L.Succeeded())
+		/*if (SW_L.Succeeded())
 		{
 			L_Weapon->SetStaticMesh(SW_L.Object);
-		}
+		}*/
 		if (SW_R.Succeeded())
 		{
 			R_Weapon->SetStaticMesh(SW_R.Object);
 		}
 
-		L_Weapon->SetupAttachment(GetMesh(), WeaponLeftSocket);
+		//L_Weapon->SetupAttachment(GetMesh(), WeaponLeftSocket);
 		R_Weapon->SetupAttachment(GetMesh(), WeaponRightSocket);
 	}
 }
