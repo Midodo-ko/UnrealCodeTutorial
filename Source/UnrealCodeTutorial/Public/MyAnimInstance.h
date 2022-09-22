@@ -6,6 +6,9 @@
 #include "Animation/AnimInstance.h"
 #include "MyAnimInstance.generated.h"
 
+// Delegate 함수명 F + 아무거나
+DECLARE_MULTICAST_DELEGATE(FOnAttackHit);
+
 /**
  * 
  */
@@ -13,6 +16,8 @@ UCLASS()
 class UNREALCODETUTORIAL_API UMyAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
+
 private:
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		float Speed;
@@ -28,6 +33,9 @@ private:
 
 	UPROPERTY(Category = Animation, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		UAnimMontage* AttackMontage;
+
+public:
+	FOnAttackHit OnAttackHit;
 
 public:
 	UMyAnimInstance();

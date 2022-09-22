@@ -27,6 +27,11 @@ private:
 		bool IsAttack = false;
 	UPROPERTY()
 		int32 AttackIndex = 0;
+
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* L_Weapon;
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* R_Weapon;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
@@ -49,7 +54,7 @@ public:
 	void MoveLeftRight(float value);
 	void LookLeftRight(float value);
 	void Attack();
-	
+	void OnHit();
 
 	UFUNCTION()
 		void OnAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted);

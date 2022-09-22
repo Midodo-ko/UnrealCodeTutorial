@@ -32,6 +32,29 @@ AMyCharacter::AMyCharacter()
 
 	X = 0.f;
 	Y = 0.f;
+
+	FName WeaponLeftSocket(TEXT("Hand_LSocket"));
+	FName WeaponRightSocket(TEXT("Hand_RSocket"));
+	if (GetMesh()->DoesSocketExist(WeaponLeftSocket))
+	{
+		L_Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("L_Weapon"));
+		R_Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("R_Weapon"));
+		
+		static ConstructorHelpers::FObjectFinder<UStaticMesh> SW_L(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Weapons/SM_Wep_Knife_Large_01.SM_Wep_Knife_Large_01'"));
+		static ConstructorHelpers::FObjectFinder<UStaticMesh> SW_R(TEXT("StaticMesh'/Game/PolygonDungeonRealms/Meshes/Weapons/SM_Wep_Knife_Large_02.SM_Wep_Knife_Large_02'"));
+		
+		if (SW_L.Succeeded())
+		{
+			L_Weapon->SetStaticMesh(SW_L.Object);
+		}
+		if (SW_R.Succeeded())
+		{
+			R_Weapon->SetStaticMesh(SW_R.Object);
+		}
+
+		L_Weapon->SetupAttachment(GetMesh(), WeaponLeftSocket);
+		R_Weapon->SetupAttachment(GetMesh(), WeaponRightSocket);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +66,7 @@ void AMyCharacter::BeginPlay()
 	if (AnimInstance)
 	{
 		AnimInstance->OnMontageEnded.AddDynamic(this, &AMyCharacter::OnAttackMontageEnd);
+		AnimInstance->OnAttackHit.AddUObject(this, &AMyCharacter::OnHit);
 	}
 }
 
@@ -112,26 +136,42 @@ void AMyCharacter::Attack()
 		AnimInstance->PlayerAttackAnimation(AttackIndex);
 		AttackIndex = ++AttackIndex % 4;
 		IsAttack = true;
-
-		FHitResult HitResult;
-		FCollisionQueryParams Params(NAME_None, false, this);
-
-		float AttackRange = 100.f;
-		float AttackRadius = 50.f;
-
-		bool Result = GetWorld()->SweepSingleByChannel(
-			OUT HitResult,
-			GetActorLocation(),
-			GetActorLocation() + GetActorForwardVector() * AttackRange,
-			FQuat::Identity,
-			ECollisionChannel::ECC_EngineTraceChannel2,
-			FCollisionShape::MakeSphere(AttackRadius),
-			Params);
-		if (Result && HitResult.GetActor())
-		{
-			UE_LOG(LogTemp, Log, TEXT("Hit : %s"), *HitResult.GetActor()->GetName());
-		}
 	}
+}
+
+void AMyCharacter::OnHit()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	float AttackRange = 100.f;
+	float AttackRadius = 50.f;
+
+	bool Result = GetWorld()->SweepSingleByChannel(
+		OUT HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * AttackRange,
+		FQuat::Identity,
+		ECollisionChannel::ECC_EngineTraceChannel2,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	FVector Forward = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + Forward * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat Rotation = FRotationMatrix::MakeFromZ(Forward).ToQuat();
+	FColor DrawColor;
+
+	if (Result)
+	{
+		DrawColor = FColor::Green;
+	}
+	else
+	{
+		DrawColor = FColor::Red;
+	}
+
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
 }
 
 void AMyCharacter::OnAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
