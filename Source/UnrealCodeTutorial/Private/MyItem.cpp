@@ -2,6 +2,7 @@
 
 
 #include "MyItem.h"
+#include "MyCharacter.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -28,14 +29,26 @@ AMyItem::AMyItem()
 
 void AMyItem::OnCharacterOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Log, TEXT("Overlap"));
+	AMyCharacter* MyCharacter = Cast<AMyCharacter>(OtherActor);
+	if (MyCharacter)
+	{
+		FName WeaponSocket(TEXT("Hand_LSocket"));
+		if (MyCharacter->GetMesh()->DoesSocketExist(WeaponSocket))
+		{
+			AttachToComponent(MyCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		}
+	}
+}
+
+void AMyItem::PostInitProperties()
+{
+	Super::PostInitProperties();
+	Trigger->OnComponentBeginOverlap.AddDynamic(this, &AMyItem::OnCharacterOverlap);
 }
 
 // Called when the game starts or when spawned
 void AMyItem::BeginPlay()
 {
 	Super::BeginPlay();
-	Trigger->OnComponentBeginOverlap.AddDynamic(this, &AMyItem::OnCharacterOverlap);
-
 }
 

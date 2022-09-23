@@ -67,12 +67,12 @@ void AMyCharacter::BeginPlay()
 		L_Weapon->SetupAttachment(GetMesh(), WeaponLeftSocket);*/
 
 		// 2번째 방법
-		auto MyWeapon = GetWorld()->SpawnActor<AMyItem>(FVector::ZeroVector, FRotator::ZeroRotator);
+		//auto MyWeapon = GetWorld()->SpawnActor<AMyItem>(FVector::ZeroVector, FRotator::ZeroRotator);
 
-		if (MyWeapon)
-		{
-			MyWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponLeftSocket);
-		}
+		//if (MyWeapon)
+		//{
+		//	MyWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponLeftSocket);
+		//}
 	}
 
 	// 오른손
