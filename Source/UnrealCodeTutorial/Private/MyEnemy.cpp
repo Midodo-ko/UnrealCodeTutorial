@@ -10,7 +10,7 @@ AMyEnemy::AMyEnemy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SM(TEXT("SkeletalMesh'/Game/PolygonDungeonRealms/Meshes/Characters/SK_Chr_Skeleton_02.SK_Chr_Skeleton_02'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SM(TEXT("SkeletalMesh'/Game/PolygonDungeonRealms/Meshes/Characters/SK_BR_Chr_Dwarf_Casual_Male_01.SK_BR_Chr_Dwarf_Casual_Male_01'"));
 	
 	if (SM.Succeeded())
 	{
