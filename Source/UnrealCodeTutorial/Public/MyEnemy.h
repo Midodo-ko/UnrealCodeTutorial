@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "MyCharacter.h"
 #include "MyEnemy.generated.h"
 
 UCLASS()
-class UNREALCODETUTORIAL_API AMyEnemy : public ACharacter
+class UNREALCODETUTORIAL_API AMyEnemy : public AMyCharacter
 {
 	GENERATED_BODY()
+
 
 public:
 	// Sets default values for this character's properties
