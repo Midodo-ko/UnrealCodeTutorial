@@ -22,6 +22,11 @@ protected:
 		bool IsAttack = false;
 	UPROPERTY()
 		int32 AttackIndex = 0;
+	UPROPERTY(VisibleAnywhere)
+		class UMyActorComponent* MyActorComponent;
+	UPROPERTY(VisibleAnywhere)
+		class UWidgetComponent* HpBar;
+
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
@@ -29,8 +34,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-public:
+    virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override; public:
 	void Attack();
 	void OnHit();
 

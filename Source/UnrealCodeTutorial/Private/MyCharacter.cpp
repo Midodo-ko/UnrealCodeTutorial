@@ -3,7 +3,9 @@
 
 #include "MyCharacter.h"
 #include "MyAnimInstance.h"
-#include "MyItem.h"
+#include "MyActorComponent.h"
+#include "Components/WidgetComponent.h"
+#include "MyUserWidget.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -13,6 +15,20 @@ AMyCharacter::AMyCharacter()
 
 	X = 0.f;
 	Y = 0.f;
+
+	MyActorComponent = CreateDefaultSubobject<UMyActorComponent>(TEXT("MyActor"));
+
+	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HpBar"));
+	HpBar->SetupAttachment(GetMesh());
+	HpBar->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
+	HpBar->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UW (TEXT("WidgetBlueprint'/Game/UI/WBP_HpBar.WBP_HpBar_C'"));
+
+	if (UW.Succeeded())
+	{
+		HpBar->SetWidgetClass(UW.Class);
+		HpBar->SetDrawSize(FVector2D(200.f, 50.f));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +49,7 @@ void AMyCharacter::BeginPlay()
 void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 
 }
 
@@ -86,9 +103,21 @@ void AMyCharacter::OnHit()
 	}
 
 	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, Rotation, DrawColor, false, 2.f);
+
+	if (Result && HitResult.GetActor())
+	{
+		FDamageEvent DamageEvent;
+		HitResult.GetActor()->TakeDamage(10.f, DamageEvent, GetController(), this);
+	}
 }
 
 void AMyCharacter::OnAttackMontageEnd(UAnimMontage* Montage, bool bInterrupted)
 {
 	IsAttack = false;
+}
+
+float AMyCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	MyActorComponent->OnDamage(Damage);
+	return Damage;
 }
