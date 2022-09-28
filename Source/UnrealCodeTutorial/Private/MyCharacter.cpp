@@ -43,6 +43,14 @@ void AMyCharacter::BeginPlay()
 		AnimInstance->OnMontageEnded.AddDynamic(this, &AMyCharacter::OnAttackMontageEnd);
 		AnimInstance->OnAttackHit.AddUObject(this, &AMyCharacter::OnHit);
 	}
+
+	HpBar->InitWidget();
+
+	auto HpWidget = Cast<UMyUserWidget>(HpBar->GetUserWidgetObject());
+	if (HpWidget)
+	{
+		HpWidget->BindHp(MyActorComponent);
+	}
 }
 
 // Called to bind functionality to input
@@ -75,8 +83,8 @@ void AMyCharacter::OnHit()
 	FHitResult HitResult;
 	FCollisionQueryParams Params(NAME_None, false, this);
 
-	float AttackRange = 100.f;
-	float AttackRadius = 50.f;
+	float AttackRange = 200.f;
+	float AttackRadius = 80.f;
 
 	bool Result = GetWorld()->SweepSingleByChannel(
 		OUT HitResult,

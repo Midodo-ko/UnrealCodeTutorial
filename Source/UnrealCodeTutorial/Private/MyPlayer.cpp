@@ -2,6 +2,7 @@
 
 
 #include "MyPlayer.h"
+#include "MyActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -73,6 +74,8 @@ void AMyPlayer::BeginPlay()
 
 		R_Weapon->SetupAttachment(GetMesh(), WeaponRightSocket);
 	}*/
+
+
 }
 
 void AMyPlayer::Tick(float DeltaTime)

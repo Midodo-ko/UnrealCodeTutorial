@@ -13,5 +13,16 @@ UCLASS()
 class UNREALCODETUTORIAL_API UMyUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+
+public:
+	void BindHp(class UMyActorComponent* ActorComponent);
+	void UpdateHp();
+
+private:
+	UPROPERTY()
+	class UMyActorComponent* MyActorComponent;
+
+	UPROPERTY(meta = (BindWidget))
+		class UProgressBar* PB_HpBar;
 };

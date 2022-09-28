@@ -16,7 +16,6 @@ UMyGameInstance::UMyGameInstance()
 void UMyGameInstance::Init()
 {
 	//Super::Init();
-	UE_LOG(LogTemp, Warning, TEXT("Character Data : %d"), GetCharacterData(1)->MaxHp);
 }
 
 FMyCharacterData* UMyGameInstance::GetCharacterData(int32 Level)
